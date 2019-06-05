@@ -11,6 +11,7 @@ Schreiben Sie drei weitere Klassen ``CurrentAccount`` (Girokonto), ``SavingsAcco
 * Auf einem Sparkonto fallen für das eingezahlte Geld Zinsen an. Der Zinssatz des Sparkontos ist als Eigenschaft der Klasse ``SavingsAccount`` darzustellen. Nach der Kontoeröffnung kann der Zinssatz nicht mehr geändert werden. Für die Gutschrift der Zinsen auf dem Sparkonto bedarf es einer zusätzlichen Methode ``computeInterest``. Diese Methode besitzt als Parameter die Anzahl der Tage, für die die Zinsen gutzuschreiben sind. Die Zinsen sind nach der Formel
 
    <img src="assets/BankAndInterestRate.png" width="300">
+   
    zu berechnen.
 
 * Ein Stundentenkonto entspricht einem Konto ohne Überziehungsrahmen. 
