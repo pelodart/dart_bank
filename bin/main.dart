@@ -1,5 +1,5 @@
 import '../lib/bank.dart';
-import '../lib/compliance_authority.dart';
+import '../lib/controlling_institution.dart';
 import '../lib/current_account.dart';
 import '../lib/savings_account.dart';
 import '../lib/students_account.dart';
@@ -147,7 +147,7 @@ void test_07_bank() {
 void test_08_compliance() async {
   Bank sparkasse = Bank('Sparkasse');
 
-  ComplianceAuthority authority = ComplianceAuthority();
+  ControllingInstitution authority = ControllingInstitution();
   sparkasse.subscribe(authority.monitor);
 
   int number1 = sparkasse.createCurrentAccount();

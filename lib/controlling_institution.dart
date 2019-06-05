@@ -1,6 +1,6 @@
 import 'transaction.dart';
 
-class ComplianceAuthority {
+class ControllingInstitution {
   void monitor(Transaction transaction) {
     int from = transaction.SourceAccount;
     int to = transaction.TargetAccount;
