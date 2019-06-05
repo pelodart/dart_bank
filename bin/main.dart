@@ -144,7 +144,7 @@ void test_07_bank() {
   print('Total Balance of ${sparkasse.Name}: ${sparkasse.TotalBalance}');
 }
 
-void test_08_compliance() async {
+void test_08_compliance() {
   Bank sparkasse = Bank('Sparkasse');
 
   ControllingInstitution authority = ControllingInstitution();
@@ -164,6 +164,4 @@ void test_08_compliance() async {
   sparkasse.transferEx(number2, number1, 100);
 
   sparkasse.unsubscribe();
-
-  print('Done.');
 }

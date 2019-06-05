@@ -42,6 +42,53 @@ Diese Methode ist immer dann aufzurufen, wenn am Bankinstitut die ``Transfer``-M
 wie zwei an sich nicht miteinander in Berührung stehende Objekte (``Bank``- und ``ControllingInstitution``-Objekt) Daten austauschen können,
 bzw. ganz konkret formuliert: Wie kommt es zum Aufruf der ``monitor``-Methode?
 
-In Dart bietet sich hierfür das ``Stream``-Konzept an. Ergänzen Sie die Klasse ``Bank`` um zwei Instanzvariablen des Typs ``StreamController`` und ``Stream<Transaction>``. ``StreamController``-Objekte stellen die Infrastruktur für Streams in Dart dar. Mit der ``listen``-Methode an einem ``Stream<Transaction>``-Objekt lassen sich Methoden anmelden, die bei vorliegenden Daten (also einem ``Transaction``-Objekt in unserem Fall) aufgerufen wird. Der Stream selbst bekommt seine Daten mit Hilfe des ``StreamController``-Objekts, das für diesen Zweck eine ``add``-Methode bereitstellt. Weitere Informationen zum Dart-Streamkonzept finden Sie in der Dart-Onlinedokumention vor.
+In Dart bietet sich hierfür das *Stream*-Konzept an. Ergänzen Sie die Klasse ``Bank`` um zwei Instanzvariablen des Typs ``StreamController`` und ``Stream<Transaction>``. ``StreamController``-Objekte stellen die Infrastruktur für Streams in Dart dar. Mit der ``listen``-Methode an einem ``Stream<Transaction>``-Objekt lassen sich Methoden anmelden, die bei vorliegenden Daten (also einem ``Transaction``-Objekt in unserem Fall) aufgerufen werden. Der Stream selbst bekommt seine Daten mit Hilfe des ``StreamController``-Objekts, das für diesen Zweck eine ``add``-Methode bereitstellt. Weitere Informationen zum Dart-Streamkonzept finden Sie in der Dart-Onlinedokumention vor.
 
+Bei erfolgreicher Zusammenarbeit zwischen einem Bankinstitut und der Bankenaufsichtsbehörde könnte ein Protokoll für alle ``transfer``-Methodenaufrufe so aussehen:
 
+```dart
+Noticed transaction:
+  From:1018 -> To:1019:
+  Amount=100
+Noticed transaction:
+  From:1019 -> To:1018:
+  Amount=100
+Noticed transaction:
+  From:1018 -> To:1019:
+  Amount=100
+Noticed transaction:
+  From:1019 -> To:1018:
+  Amount=100
+Noticed transaction:
+  From:1018 -> To:1019:
+  Amount=100
+Noticed transaction:
+  From:1019 -> To:1018:
+  Amount=100
+```
+
+Der Testrahmen, der dieses Protokoll erzeugt, könnte so aussehen:
+
+```dart
+void test_compliance() {
+  Bank sparkasse = Bank('Sparkasse');
+
+  ControllingInstitution authority = ControllingInstitution();
+  sparkasse.subscribe(authority.monitor);
+
+  int number1 = sparkasse.createCurrentAccount();
+  sparkasse.depositEx(number1, 1000);
+
+  int number2 = sparkasse.createCurrentAccount();
+  sparkasse.depositEx(number2, 1000);
+
+  sparkasse.transferEx(number1, number2, 100);
+  sparkasse.transferEx(number2, number1, 100);
+  sparkasse.transferEx(number1, number2, 100);
+  sparkasse.transferEx(number2, number1, 100);
+  sparkasse.transferEx(number1, number2, 100);
+  sparkasse.transferEx(number2, number1, 100);
+
+  sparkasse.unsubscribe();
+}
+```
